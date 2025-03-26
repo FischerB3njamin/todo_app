@@ -7,20 +7,15 @@ class LoginFirebase implements LoginRepo {
   LoginFirebase(this._auth);
 
   @override
-  Stream<User?> authChanged() {
-    return _auth.authStateChanges();
-  }
-
-  @override
   Future<String?> login(String email, String password) async {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
         case 'invalid-credentials':
-          return "Falsche Anmeldedaten";
+          return "Wrong logindata";
         default:
-          return "EIn Fehler ist aufgetreten ";
+          return "An error Occured";
       }
     }
     return null;
@@ -39,11 +34,14 @@ class LoginFirebase implements LoginRepo {
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
         case "email-already-in-use":
-          return 'E-Mail ist bereits vergeben';
+          return 'E-Mail already registered. Please login';
         default:
-          return "Ein Fehler ist aufgetreten";
+          return "An error Occured";
       }
     }
     return null;
   }
+
+  @override
+  get onAuthChanged => _auth.authStateChanges();
 }
