@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:todo_app/app.dart';
 import 'package:todo_app/features/auth/data/login_controller.dart';
 import 'package:todo_app/features/auth/data/login_firebase.dart';
+import 'package:todo_app/features/auth/data/login_mock_repo.dart';
 import 'package:todo_app/firebase_options.dart';
 
 void main() async {
@@ -12,10 +13,9 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  // Firebase Auth Instanz
   FirebaseAuth auth = FirebaseAuth.instance;
+  LoginMockRepo mockRepo = LoginMockRepo();
 
-  // Login Repository
   final loginRepository = LoginController(fb: LoginFirebase(auth));
 
   runApp(App(loginController: loginRepository));

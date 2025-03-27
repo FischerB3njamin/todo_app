@@ -7,7 +7,7 @@ import 'package:todo_app/features/categories/widgets/category_tile.dart';
 
 class CategoryPage extends StatefulWidget {
   final LoginController loginController;
-  final User user;
+  final dynamic user;
   const CategoryPage({
     super.key,
     required this.loginController,
@@ -40,7 +40,7 @@ class _CategoryPageState extends State<CategoryPage> {
             children: [
               Row(
                 children: [
-                  Container(
+                  SizedBox(
                     width: 250,
                     child: Text(
                       'Hello ${widget.user.email} ',

@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_app/features/auth/data/login_controller.dart';
 import 'package:todo_app/features/auth/views/login_screen.dart';
@@ -14,8 +13,9 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: StreamBuilder<User?>(
-          stream: loginController.onAuthChanged,
+      debugShowCheckedModeBanner: false,
+      home: StreamBuilder(
+          stream: loginController.onAuthChanged(),
           builder: (context, snapshot) {
             /// User ist authentifiziert
             if (snapshot.hasData && snapshot.data != null) {

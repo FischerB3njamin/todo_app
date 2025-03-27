@@ -12,4 +12,5 @@ class LoginController {
   Future<String?> login(String email, String password) =>
       fb.login(email, password);
   Future<void> logout() => fb.logout();
+  Future<String?> signInWithGoogle() => fb.signInWithGoogle();
 }

@@ -1,10 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:todo_app/features/auth/data/login_repo.dart';
 
 class LoginFirebase implements LoginRepo {
   final FirebaseAuth _auth;
 
   LoginFirebase(this._auth);
+
+  @override
+  Stream<User?> onAuthChanged() => _auth.authStateChanges();
 
   @override
   Future<String?> login(String email, String password) async {
@@ -23,6 +28,7 @@ class LoginFirebase implements LoginRepo {
 
   @override
   Future<void> logout() async {
+    await GoogleSignIn().signOut();
     await _auth.signOut();
   }
 
@@ -43,5 +49,25 @@ class LoginFirebase implements LoginRepo {
   }
 
   @override
-  get onAuthChanged => _auth.authStateChanges();
+  Future<String?> signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+      final GoogleSignInAuthentication? googleAuth =
+          await googleUser?.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
+
+      await _auth.signInWithCredential(credential);
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print('exception->$e');
+      }
+      return "Google-Fehler: $e";
+    }
+    return null;
+  }
 }

@@ -33,8 +33,9 @@ class _LoginScreenState extends State<LoginScreen> {
       () => setState(() => isLogin = false),
       () async {
         if (formKey.currentState?.validate() ?? false) {
-          await widget.loginController
+          error = await widget.loginController
               .login(emailController.text, passwordController.text);
+          setState(() {});
         }
       },
     );
@@ -153,6 +154,10 @@ class _LoginScreenState extends State<LoginScreen> {
             SizedBox(height: 16),
             if (isLogin) getLogin(),
             if (!isLogin) getRegistration(),
+            SizedBox(height: 32),
+            ElevatedButton(
+                onPressed: () => widget.loginController.signInWithGoogle(),
+                child: Text("login with google"))
           ],
         ),
       ),
